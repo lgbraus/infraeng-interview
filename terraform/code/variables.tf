@@ -25,5 +25,5 @@ variable "alb_name" {
 variable "acm_certificate_arn" {
   description = "ARN of the ACM certificate for HTTPS"
   type        = string
-  default     = "arn:aws:acm:us-east-1:891377306473:certificate/90241c32-b2fa-47f1-8bfb-afbc6fde47a2"
+  default     = ""
 }
