@@ -42,7 +42,7 @@ def read_validate_json_file(file_path):
     except json.JSONDecodeError as e:
         logging.error("Invalid JSON in file %s: %s", file_path, e)
         return None
-    except IOError as e:
+    except Exception as e:
         logging.error("An error occurred while reading the file: %s", e)
         return None
 
