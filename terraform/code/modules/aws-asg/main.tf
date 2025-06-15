@@ -164,14 +164,14 @@ resource "aws_launch_template" "this" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name        = "${var.asg_name}-instance"
-      Terraform   = "true"
+      Name      = "${var.asg_name}-instance"
+      Terraform = "true"
     }
   }
 
   tags = {
-    Name        = var.asg_name
-    Terraform   = "true"
+    Name      = var.asg_name
+    Terraform = "true"
   }
 
   lifecycle {

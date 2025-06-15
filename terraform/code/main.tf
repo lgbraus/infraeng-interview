@@ -1,17 +1,4 @@
-# Create a Terraform module with the following requiments for AWS Autoscaling group to run ephemeral EC2 instances:
-
-# The modules input should be:
-# 1) Autoscaling group name
-# 2) Load balancer URL (Meant to be ALB arn?)
-
-# Module requirements:
-
-# 1) It should run the lastest version of Amazon Linux 2023 every time is launched
-# 2) The EC2 instance should be accssible via SSM Session Manager
-# 3) The EC2 instance /var/log/messages should be available on Cloud Watch Log
-# 4) The auto scalling group should replace the instance every 30 days
-# 5) Nginx must be installed and listening to port 80
-# 6) The EC2 intances must be hosted on private subnets 
+### Auto Scaling Group (ASG) Module
 
 module "aws-asg" {
   source = "./modules/aws-asg"
@@ -25,8 +12,7 @@ module "aws-asg" {
   ]
 }
 
-
-# 6) Create an application load balancer that listen TLS over HTTP and reaches the EC2 instances above on NGINX
+### Application Load Balancer (ALB) Configuration
 
 data "aws_vpc" "selected" {
   tags = {
@@ -86,11 +72,13 @@ resource "aws_vpc_security_group_egress_rule" "alb_egress" {
 
 # ALB
 resource "aws_lb" "alb" {
-  name               = var.alb_name
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb.id]
-  subnets            = data.aws_subnets.public.ids
+  name                       = var.alb_name
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.alb.id]
+  subnets                    = data.aws_subnets.public.ids
+  drop_invalid_header_fields = true
+  enable_deletion_protection = true
 
 
   tags = {
