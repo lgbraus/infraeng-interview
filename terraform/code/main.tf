@@ -86,11 +86,13 @@ resource "aws_vpc_security_group_egress_rule" "alb_egress" {
 
 # ALB
 resource "aws_lb" "alb" {
-  name               = var.alb_name
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb.id]
-  subnets            = data.aws_subnets.public.ids
+  name                       = var.alb_name
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.alb.id]
+  subnets                    = data.aws_subnets.public.ids
+  drop_invalid_header_fields = true
+  enable_deletion_protection = true
 
 
   tags = {
